@@ -1,4 +1,10 @@
 {
+  "scripts": {
+    "start": "node index.js",
+    "postinstall": "apt-get update && apt-get install -y yt-dlp"
+  }
+}
+{
   "type": "module",
   "scripts": {
     "start": "node index.js"
