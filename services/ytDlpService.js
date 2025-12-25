@@ -1,12 +1,13 @@
-import { exec } from "child_process";
+import ytdlp from "yt-dlp-exec";
 
-export function fetchMedia(url) {
-  return new Promise((resolve, reject) => {
-    const cmd = `npx yt-dlp -J "${url}"`;
-
-    exec(cmd, { maxBuffer: 1024 * 1024 * 50 }, (err, stdout) => {
-      if (err) return reject(err);
-      resolve(JSON.parse(stdout));
-    });
+export async function fetchMedia(url) {
+  const output = await ytdlp(url, {
+    dumpSingleJson: true,
+    noWarnings: true,
+    noCheckCertificates: true,
+    preferFreeFormats: true,
+    youtubeSkipDashManifest: true
   });
+
+  return output;
 }
