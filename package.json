@@ -1,11 +1,10 @@
 {
-  "name": "all-in-one-downloader-api",
-  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "start": "node index.js"
   },
   "dependencies": {
-    "express": "^4.19.2"
+    "express": "^4.19.2",
+    "express-rate-limit": "^7.0.0"
   }
 }
