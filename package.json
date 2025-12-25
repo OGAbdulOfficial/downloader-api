@@ -1,14 +1,10 @@
 {
-  "name": "downloader-api",
-  "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "start": "node index.js",
-    "postinstall": "curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o /usr/local/bin/yt-dlp && chmod +x /usr/local/bin/yt-dlp"
+    "start": "node index.js"
   },
   "dependencies": {
     "express": "^4.19.2",
-    "express-rate-limit": "^7.0.0",
-    "cors": "^2.8.5"
+    "express-rate-limit": "^7.0.0"
   }
 }
