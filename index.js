@@ -1,5 +1,4 @@
 import express from "express";
-import rateLimit from "express-rate-limit";
 import detectPlatform from "./utils/detectPlatform.js";
 import normalize from "./utils/normalizeYTDLP.js";
 import { fetchMedia } from "./services/ytDlpService.js";
@@ -9,17 +8,6 @@ const app = express();
 /* ===============================
    BASIC SECURITY & STABILITY
 ================================ */
-
-// Rate limit (abuse protection)
-app.use(
-  rateLimit({
-    windowMs: 60 * 1000, // 1 minute
-    max: 20, // 20 requests per IP
-  })
-);
-
-// JSON response safety
-app.use(express.json());
 
 /* ===============================
    HEALTH CHECK (IMPORTANT)
