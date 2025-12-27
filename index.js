@@ -9,6 +9,12 @@ const app = express();
    BASIC SECURITY & STABILITY
 ================================ */
 
+// IMPORTANT: reverse proxy / Cloudflare / Nginx ke liye
+app.set("trust proxy", 1);
+
+// JSON parsing
+app.use(express.json());
+
 /* ===============================
    HEALTH CHECK (IMPORTANT)
 ================================ */
@@ -36,6 +42,7 @@ app.get("/api/download", async (req, res) => {
 
   if (!url) {
     return res.status(400).json({
+      success: false,
       error: "URL required",
       example: "/api/download?url=https://youtube.com/..."
     });
@@ -45,6 +52,7 @@ app.get("/api/download", async (req, res) => {
 
   if (platform === "unsupported") {
     return res.status(400).json({
+      success: false,
       error: "Unsupported platform",
       supported: [
         "YouTube",
@@ -57,15 +65,16 @@ app.get("/api/download", async (req, res) => {
   }
 
   try {
-    const raw = await fetchMedia(url); // yt-dlp call
+    const raw = await fetchMedia(url);   // yt-dlp call
     const clean = normalize(raw);
 
-    clean.platform = platform;
-    clean.success = true;
-
-    res.json(clean);
+    res.json({
+      success: true,
+      platform,
+      ...clean
+    });
   } catch (err) {
-    console.error("DOWNLOAD ERROR:", err.message);
+    console.error("DOWNLOAD ERROR:", err);
 
     res.status(500).json({
       success: false,
@@ -76,11 +85,12 @@ app.get("/api/download", async (req, res) => {
 });
 
 /* ===============================
-   PORT (Railway compatible)
+   PORT + PUBLIC BIND
 ================================ */
 
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, () => {
-  console.log("API running on port", PORT);
+// 🔥 MOST IMPORTANT LINE (public access)
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`Downloader API running publicly on port ${PORT}`);
 });
